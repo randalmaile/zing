@@ -1,6 +1,22 @@
-.welcome
-  %h1 Zing-Chart
-  %p.doc
-    = link_to "Read Online Documentation", "http://middlemanapp.com/"
-  / .doc
-/ .welcome
+%script{src: "javascripts/html5_scripts/zingchart-html5-min.js"}
+:javascript
+  var myChart = {
+    type   : "line",
+    title  : {text: "Hello ZingChart World!"},
+    series : [
+      {values:[5, 10, 15, 5, 10, 5]},
+      {values:[2, 4, 6, 8, 10, 12]}
+    ]
+  };
+  window.onload=function(){
+    zingchart.render({
+    id : "myChartDiv",
+    height : 450,
+    width : 600,
+    data : myChart,
+    output : "svg"
+    });
+  };
+
+/ The chart will render here.
+#myChartDiv
