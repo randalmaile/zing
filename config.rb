@@ -32,6 +32,11 @@
 # Helpers
 ###
 
+set :google_user_account_id, ENV['GOOGLE_USER_ACCOUNT_ID']
+
+set :google_user_api_key, ENV['GOOGLE_USER_API_KEY']
+
+
 # Automatic image dimensions on image_tag helper
 activate :automatic_image_sizes
 
