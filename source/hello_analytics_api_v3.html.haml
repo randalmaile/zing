@@ -1,7 +1,27 @@
 / The 2 Buttons for the user to interact with
+%h1 Hello Google Analytics API
+%p
+  This page demonstrates how to query the Google Analytics API version 3 using the
+  %a{href: "https://code.google.com/p/google-api-javascript-client/"} Google API Javascript Client Library
+%p
+  The demo traverses the
+  %a{href: "http://code.google.com/apis/analytics/docs/mgmt/v3/mgmtGettingStarted.html"} Management API to retrieve the first profile ID for the authorized user. This profile ID is then used with the
+  %a{href: "http://code.google.com/apis/analytics/docs/gdata/v3/gdataGettingStarted.html"} Core Reporting API to retrieve the top 25 organic search terms by visits.
+%p
+  To learn how this works, read the detailed comments in the 
+  %a{href: "hello_analytics_api_v3.js"} JavaScript source code
+%p To run the demo:
+%ol
+  %li Click the authorize button to grant access to your Google Analytics data.
+  %li Click the run demo button to start the demo.
+%hr/
 %button#authorize-button{style: "visibility: hidden"} Authorize
+%button#run-demo-button{style: "visibility: hidden"} Run Demo
 %br/
-%button#make-api-call-button{style: "visibility: hidden"} Get Sessions
+%hr/
+#output Loading, one sec....
+
+
 / These JavaScript files will be created later on in the tutorial
 :javascript
   var clientId = '#{settings.google_user_account_id}';

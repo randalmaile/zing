@@ -1,63 +1,101 @@
-// This function is called after the Client Library has finished loading
+// Copyright 2012 Google Inc. All Rights Reserved.
+
+/* Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
+/**
+ * Callback executed once the Google APIs Javascript client library has loaded.
+ * The function name is specified in the onload query parameter of URL to load
+ * this library. After 1 millisecond, checkAuth is called.
+ */
 function handleClientLoad() {
-  // 1. Set the API Key
   gapi.client.setApiKey(apiKey);
-
-  // 2. Call the function that checks if the user is Authenticated. This is defined in the next section
-  window.setTimeout(checkAuth,1);
+  window.setTimeout(checkAuth, 1);
 }
 
+
+/**
+ * Uses the OAuth2.0 clientId to query the Google Accounts service
+ * to see if the user has authorized. Once complete, handleAuthResults is
+ * called.
+ */
 function checkAuth() {
-  // Call the Google Accounts Service to determine the current user's auth status.
-  // Pass the response to the handleAuthResult callback function
-  gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+  gapi.auth.authorize({
+    client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
 }
 
+
+/**
+ * Handler that is called once the script has checked to see if the user has
+ * authorized access to their Google Analytics data. If the user has authorized
+ * access, the analytics api library is loaded and the handleAuthorized
+ * function is executed. If the user has not authorized access to their data,
+ * the handleUnauthorized function is executed.
+ * @param {Object} authResult The result object returned form the authorization
+ *     service that determine whether the user has currently authorized access
+ *     to their data. If it exists, the user has authorized access.
+ */
 function handleAuthResult(authResult) {
   if (authResult) {
-    // The user has authorized access
-    // Load the Analytics Client. This function is defined in the next section.
-    loadAnalyticsClient();
+    gapi.client.load('analytics', 'v3', handleAuthorized);
   } else {
-    // User has not Authenticated and Authorized
-    handleUnAuthorized();
+    handleUnauthorized();
   }
 }
 
 
-// Authorized user
+/**
+ * Updates the UI once the user has authorized this script to access their
+ * data. This changes the visibiilty on some buttons and adds the
+ * makeApiCall click handler to the run-demo-button.
+ */
 function handleAuthorized() {
   var authorizeButton = document.getElementById('authorize-button');
-  var makeApiCallButton = document.getElementById('make-api-call-button');
+  var runDemoButton = document.getElementById('run-demo-button');
 
-  // Show the 'Get Sessions' button and hide the 'Authorize' button
-  makeApiCallButton.style.visibility = '';
   authorizeButton.style.visibility = 'hidden';
-
-  // When the 'Get Sessions' button is clicked, call the makeAapiCall function
-  makeApiCallButton.onclick = makeApiCall;
+  runDemoButton.style.visibility = '';
+  runDemoButton.onclick = makeApiCall;
+  outputToPage('Click the Run Demo button to begin.');
 }
 
 
-// Unauthorized user
-function handleUnAuthorized() {
+/**
+ * Updates the UI if a user has not yet authorized this script to access
+ * their Google Analytics data. This function changes the visibility of
+ * some elements on the screen. It also adds the handleAuthClick
+ * click handler to the authorize-button.
+ */
+function handleUnauthorized() {
   var authorizeButton = document.getElementById('authorize-button');
-  var makeApiCallButton = document.getElementById('make-api-call-button');
+  var runDemoButton = document.getElementById('run-demo-button');
 
-  // Show the 'Authorize Button' and hide the 'Get Sessions' button
-  makeApiCallButton.style.visibility = 'hidden';
+  runDemoButton.style.visibility = 'hidden';
   authorizeButton.style.visibility = '';
-
-  // When the 'Authorize' button is clicked, call the handleAuthClick function
   authorizeButton.onclick = handleAuthClick;
+  outputToPage('Please authorize this script to access Google Analytics.');
 }
 
+
+/**
+ * Handler for clicks on the authorization button. This uses the OAuth2.0
+ * clientId to query the Google Accounts service to see if the user has
+ * authorized. Once complete, handleAuthResults is called.
+ * @param {Object} event The onclick event.
+ */
 function handleAuthClick(event) {
-  gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+  gapi.auth.authorize({
+    client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
   return false;
-}
-
-function loadAnalyticsClient() {
-  // Load the Analytics client and set handleAuthorized as the callback function
-  gapi.client.load('analytics', 'v3', handleAuthorized);
 }
