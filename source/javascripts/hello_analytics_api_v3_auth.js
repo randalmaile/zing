@@ -1,7 +1,3 @@
-var clientId = '801094023015.apps.googleusercontent.com';
-var apiKey = 'AIzaSyC71LXqr_ocEI9ulEvkeBpGgEa42XRNUHE';
-var scopes = 'https://www.googleapis.com/auth/analytics.readonly';
-
 // This function is called after the Client Library has finished loading
 function handleClientLoad() {
   // 1. Set the API Key

@@ -1,4 +1,10 @@
 ###
+# Global settings
+##
+
+activate :dotenv
+
+###
 # Compass
 ###
 
