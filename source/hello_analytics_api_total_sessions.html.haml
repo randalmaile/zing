@@ -1,0 +1,14 @@
+/ The 2 Buttons for the user to interact with
+%button#authorize-button{style: "visibility: hidden"} Authorize
+%br/
+%button#make-api-call-button{style: "visibility: hidden"} Get Sessions
+
+/ These JavaScript files will be created later on in the tutorial
+:javascript
+  var clientId = '#{settings.google_user_account_id}';
+  var apiKey = '#{settings.google_user_api_key}';
+  var scopes = 'https://www.googleapis.com/auth/analytics.readonly';
+%script{src: "javascripts/hello_analytics_api_v3_auth_v2.js"}
+%script{src: "javascripts/hello_analytics_api_total_sessions.js"}
+/ Load the Client Library. Use the onload parameter to specify a callback function
+%script{src: "https://apis.google.com/js/client.js?onload=handleClientLoad"}
